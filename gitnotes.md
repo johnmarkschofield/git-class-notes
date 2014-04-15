@@ -5,6 +5,10 @@
 > Peter Bell (Trainer (contract) at GitHub)
 > Peter is a contract member of the GitHub training team, writing a book on Git for Pearson, one on GitHub for O’Reilly and creating screencasts on GitHub for Code School and Pluralsight. He’s also a co-founder and co-organizer of CTO school and the New York Startup CTO summit, runs a node.js meetup and is the founder and CTO of speakgeek.co - a company that helps business people to learn how to more effectively hire and manage developers. http://linkedin.com/in/peterfbell
 
+pbell@github.com
+@peterbell
+
+
 
 
 ## Git Class I
@@ -145,10 +149,173 @@ Then it will add the delete and auto-detect the rename. It detects a rename if t
 
 This means that if you have two files that are > 50% the same, it could be detected as a rename when it's not. Be careful.
 
+```
+git rm filename
+# removes the file
+
+rm fileb
+# git sees an unstaged deletion
+
+git add . # does not work
+
+git add -A # adds deletion
+
+
+touch test.log
+git status
+# Git knows about test.log, but we don't want to commit it. You could remember to never add it. But you'll screw it up.
+echo "*.log" >> .gitignore
+git status # Now git is happy
+
+
+$ git config --global core.excludesfile ~/.gitignore
+# Probably don't use this
+
+
+
+git remote add origin FOOBAR
+```
+
+Origin is always the main repo. Could be anything, but origin is convention.
+
+git push -u origin master # the -u sets the origin as upstream for master
+
+https://help.github.com/articles/set-up-git -- do this and cache credentials on OS X
+
+
+
+```
+$ git push
+warning: push.default is unset; its implicit value is changing in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the current behavior after the default changes, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+Everything up-to-date
+
+
+```
+
+Do the one that ends in simple.
+
+matching pushes all branches that have matching branches on remote.
+simple pushes only changes to current branch to remote.
+
+
+Got this error: http://stackoverflow.com/questions/13030714/git-1-8-0-fatal-the-current-branch-master-has-multiple-upstream-branches-refu following these steps. Now trying to reproduce.
+
+
+2200  git init failtest
+ 2201  cd failtest/
+ 2202  date > index.html
+ 2203  git add index.html
+ 2204  git commit -m "First commit"
+ 2205  git status
+ 2206  git remote add origin git@github.com:johnmarkschofield/failtest.git
+ 2207  git push -u origin master
+ 2208  date >> index.html
+ 2209  git status
+ 2210  git commit -a -m "test"
+ 2211  git push
+ 2212  history
+
+
+# Yep. Fails.
+
+
+```
+
+#### Branching
+
+
+git branch # list branches
+git branch about_us # create about_us branch
+
+
+ 2174  git branch about_us
+ 2175  git branch
+ 2176  git checkout about_us
+ 2177  touch about.html
+ 2178  touch about.css
+ 2179  git add about.html
+ 2180  git commit -m "We've got some smokin' html here."
+ 2181  git add about.css
+ 2182  git commit -m "Our CSS is da bomb"
+ 2183  git status
+ 2184  git lg
+
+$ git lg
+* fef1e04 (HEAD, about_us) Our CSS is da bomb
+* 60899b4 We've got some smokin' html here.
+* 8564a0a (origin/master, master) New home page
+
+HEAD is the stuff currently int he working directory
+
+
+To create a branch and check it out:
+git checkout -b contact_us # does git branch and then git checkout
+
+Now we want to mrege about_us branch into master branch.
+
+We should work on feature branch. Most feature branches should be short-lived -- an hour, a day, etc.
+
+If you have a feature branch living for more than week, it's probably too large.
+
+Rule of thumb is master is always releasable. Even if you're not doing CD and deploying 20 times a day
+
+once feature branch is done we merge back into master branch.
+
+QA should test branch before we merge into master.
+
+
+So we check out master and then merge into it.
+
+--no-ff don't do fast-forward. Don't do it.
+git merge about_us # forgetting to --no-ff
+$ git reset --keep master@{1}
+
+
+Now delete the branch:
+git branch -d about_us
+
+This does not remove history or commits
+
+
+git show HASH # shows you details
+
+
+
+
+All work should be in branches
+
+
+As soon as you push to github you can't change that history.
+
+Creating a merge conflict.
+
+
+
+
+
+
+
 
 ## Git Class II
 
 From http://chefconf2014.busyconf.com/schedule#activity_52f94eb26c7f049afd000003
 
 > Learn how to fix almost anything with amend, reset, revert, rebase and even the magical reflog. Learn about alternative workflows and best practices for collaboration using github and git. Whether you're comfortable with the basics of adding and committing to git, have a little experience with branching and know how to clone a github repo or have a couple of years of solid git experience, by the end of this class you'll understand git more deeply and be able to use it more elegantly. If you're completely new to git, consider taking the foundations class in the morning first so you're ready for this afternoon session.
+
+
+
+
 
